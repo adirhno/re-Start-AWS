@@ -7,14 +7,14 @@ echo "please enter 3 numbers"; exit 1
 fi
 
 #create sum+length
-arr= ($1 $2 $3)
-let length =( ${#arr} + 1 )
-let sum = 0
+arr=($1 $2 $3)
+let length=( ${#arr} + 1 )
+let sum=0
 
 #get the series summary
 for num in ${arr[@]}
 do
-let sum =($sum+$num)
+let sum=($sum+$num)
 done
 
 
@@ -39,8 +39,8 @@ function validator(){
 #get the average
 function get_average(){
 
-    local avg = 0
-    let avg =($sum/ $length)
+    local avg=0
+    let avg=($sum/ $length)
     echo $avg
 
 }
@@ -58,7 +58,7 @@ function sortArr(){
 #get the min value of the series
 function min(){
 
-local min =$(max $1 $2 $3)
+local min=$(max $1 $2 $3)
 
 for num in ${arr[@]}; do
 
@@ -99,7 +99,7 @@ function prog1(){
 
     validator $num1 $num2 $num3
 
-    options= ("re-input display-the-series low-to-high max min average length sum exit")
+    options=("re-input display-the-series low-to-high max min average length sum exit")
 
     select opt in ${options[@]}
 
