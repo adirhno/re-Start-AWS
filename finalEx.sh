@@ -1,54 +1,64 @@
 #!/bin/bash
 
-#validate input
-if [ ! $3 ]
-then
-echo "please enter 3 numbers"; exit 1
-fi
+function init_arr(){
+    arr=($@)  
+}
 
-#create global variables
-low=0
-height=0
-arr=($1 $2 $3)
-let length=( ${#arr} + 1 )
-let sum=0
+#get array length
+function get_length(){
+    echo $((${#arr[@]}))
+}
 
 #get the series summary
-for num in ${arr[@]}
-do
-let sum=($sum+$num)
-done
-
+function get_sum(){
+    local sum=0
+    for num in ${arr[@]}
+        do
+        let sum=($sum+$num)
+    done
+    echo $sum
+}
 
 #validator function
 function validator(){
 
-    echo "in validaotr"
+    if [ $# -eq 0 ]
+     then
+        echo "Enter a series of at least 3 numbers greater than 0"; read -p "series: " series; main $series
+     fi   
 
-    local num1=$1
-    local num2=$2
-    local num3=$3
-
-    echo $num1 $num2 $num3
-
-    if [ $num1 -lt 0 ] || [ $num2 -lt 0 ] || [ $num3 -lt 0 ]
+    for num in $@
+     do
+        if [ $num -lt 0 ] || [ ${#arr[@]} -lt 3 ]
         then
         echo "one or more numbers is less than 0"
-        exit 1 
-    fi
+        echo "Enter a series of at least 3 numbers greater than 0"; read -p "series: " series; main $series
+        fi
+    done
+    
 }
 
 #get the average
 function get_average(){
-
     local avg=0
+    local sum=`get_sum`
+    local length=`get_length`
+
     let avg=($sum/ $length)
     echo $avg
+}
 
+#print arry items from low to high
+function low_to_high(){
+    sortArr
+    for num in ${sortedArr[@]}
+        do echo $num 
+    done
 }
 
 #sort from low to high
 function sortArr(){
+<<<<<<< HEAD
 
     sortedArr=($( for num in "${arr[@]}"
      do echo $num
@@ -57,99 +67,83 @@ function sortArr(){
     for num in ${sortedArr[@]}
      do echo $num 
     done
+=======
+    sortedArr=($( for num in "${arr[@]}"; do echo $num; done | sort -n ))
+>>>>>>> rejects
 }
 
-#get the min value of the series
+#get the minimum value of the series
 function min(){
-
-local min=$(max $1 $2 $3)
-
-for num in ${arr[@]}; do
-
-    if (( $num < $min ))
-     then
-     min=$num
-    fi
-
-done
-
-echo $min
+    sortArr
+    echo ${sortedArr[0]}
 }
-
 
 #get the maximum value of the series
 function max(){
-
-    local max=0
-    for num in ${arr[@]}
-     do
-        if (( $num > $max ))
-        then
-        max=$num
-        fi
-
-    done
-
-    echo $max
+     sortArr
+     echo ${sortedArr[$((${#arr[@]}-1))]}
 }
 
 
-function prog1(){
-
-    local num1=$1
-    local num2=$2
-    local num3=$3
-
-
-    validator $num1 $num2 $num3
+function main(){
+    init_arr $@
+  
+    validator $@
 
     options=("re-input display-the-series low-to-high max min average length sum exit")
 
     select opt in ${options[@]}
-
         do
             case $opt in 
 
                 "re-input")
-                    echo "enter a series of 3 numbers gt 0"; read -p "num1: " n1; read -p "num2: " n2; read -p "num3: " n3; prog1 $n1 $n2 $n3 
+                    echo "Enter a series of at least 3 numbers greater than 0"; read -p "series: " series; main $series
                     ;;
 
                 "display-the-series")
-                    echo $num1 $num2 $num3
+                    echo $@
                     ;;
 
                 "low-to-high")
-                    sortArr $num1 $num2 $num3 
+                    echo from low to high:
+                    low_to_high
                     ;; 
 
                 "max") 
-                    max $num1 $num2 $num3 
+                    echo maximum number is: 
+                    max 
                     ;;
 
                 "min")
-                    min $num1 $num2 $num3 
+                    echo minimum number is:
+                    min 
                     ;;
 
                 "average")
-                    get_average $num1 $num2 $num3 
+                    echo the average is:
+                    get_average 
                     ;;
 
                 "length") 
-                    echo $length 
+                    echo the series length is:
+                    get_length 
                     ;;
 
                 "sum")
-                    echo $sum 
+                    echo the series sum is:
+                     get_sum
                     ;;
 
                 "exit")
                      exit 1 
                      ;;
             esac
-
+         echo
+         echo
         done
+          echo
 }
 
 
-prog1 $1 $2 $3
+main $@
 
