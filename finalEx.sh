@@ -6,7 +6,9 @@ then
 echo "please enter 3 numbers"; exit 1
 fi
 
-#create sum+length
+#create global variables
+low=0
+height=0
 arr=($1 $2 $3)
 let length=( ${#arr} + 1 )
 let sum=0
@@ -48,7 +50,9 @@ function get_average(){
 #sort from low to high
 function sortArr(){
 
-    sortedArr=($( for num in "${arr[@]}"; do echo $num; done | sort -n ))
+    sortedArr=($( for num in "${arr[@]}"
+     do echo $num
+     done | sort -n ))
 
     for num in ${sortedArr[@]}
      do echo $num 
