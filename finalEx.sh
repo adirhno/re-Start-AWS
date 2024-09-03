@@ -6,7 +6,7 @@ function init_arr(){
 
 #get array length
 function get_length(){
-    echo $((${#arr[@]}))
+    echo ${#arr[@]}
 }
 
 #get the series summary
@@ -35,12 +35,13 @@ function validator(){
         echo "Enter a series of at least 3 numbers greater than 0"; read -p "series: " series; main $series
         fi
     done
-    
 }
+
 
 #get the average
 function get_average(){
     local avg=0
+    #assumes that array exist and valid
     local sum=`get_sum`
     local length=`get_length`
 
@@ -50,6 +51,7 @@ function get_average(){
 
 #print arry items from low to high
 function low_to_high(){
+    #assumes that arra
     sortArr
     for num in ${sortedArr[@]}
         do echo $num 
@@ -58,18 +60,7 @@ function low_to_high(){
 
 #sort from low to high
 function sortArr(){
-<<<<<<< HEAD
-
-    sortedArr=($( for num in "${arr[@]}"
-     do echo $num
-     done | sort -n ))
-
-    for num in ${sortedArr[@]}
-     do echo $num 
-    done
-=======
     sortedArr=($( for num in "${arr[@]}"; do echo $num; done | sort -n ))
->>>>>>> rejects
 }
 
 #get the minimum value of the series
@@ -81,13 +72,14 @@ function min(){
 #get the maximum value of the series
 function max(){
      sortArr
+     #could used the index -1
      echo ${sortedArr[$((${#arr[@]}-1))]}
 }
 
 
 function main(){
     init_arr $@
-  
+  #initial array
     validator $@
 
     options=("re-input display-the-series low-to-high max min average length sum exit")
